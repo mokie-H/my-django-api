@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
+from rest_framework.renderers import JSONRenderer
 
 # Create your views here.
 from rest_framework import viewsets
@@ -22,7 +23,7 @@ def snippet_list(request):
     if request.method == 'GET':
         snippets = Snippet.objects.all()
         serializer = SnippetSerializer(snippets, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return HttpResponse(JSONRenderer().render(serializer.data), status = 200,content_type = "application/json")
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
@@ -59,4 +60,5 @@ def snippet_detail(request, pk):
         return HttpResponse(status=204)
 
 def index(request):
-    return JsonResponse({'name':'mekonnen','age':23})
+    name = "mekonnen"
+    return JsonResponse({'name':name,'age':23})
