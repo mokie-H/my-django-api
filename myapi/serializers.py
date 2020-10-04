@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Hero, Snippet, LANGUAGE_CHOICES, STYLE_CHOICES
+from .models import Hero, Snippet, LANGUAGE_CHOICES, STYLE_CHOICES, AssesmentItem,Answers
 
 class HeroSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -32,3 +32,14 @@ class SnippetSerializer(serializers.Serializer):
         instance.style = validated_data.get('style', instance.style)
         instance.save()
         return instance
+
+class AnswersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answers
+        exclude = ('id',)
+
+class AssesmentItemSerislizer(serializers.ModelSerializer):
+    answers = AnswersSerializer(many=True)   
+    class Meta:
+        model = AssesmentItem
+        fields =("id","question","assesment_category","answers")

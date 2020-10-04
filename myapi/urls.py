@@ -4,6 +4,8 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'heroes', views.HeroViewSet)
+router.register(r'assesments', views.AssesmentItemViewSet,basename='assesment')
+router.register(r'answers', views.AnswersViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

@@ -6,8 +6,8 @@ from rest_framework.renderers import JSONRenderer
 # Create your views here.
 from rest_framework import viewsets
 
-from .serializers import HeroSerializer, SnippetSerializer
-from .models import Hero, Snippet
+from .serializers import HeroSerializer, SnippetSerializer,AssesmentItemSerislizer,AnswersSerializer
+from .models import Hero, Snippet,AssesmentItem,Answers
 
 
 class HeroViewSet(viewsets.ModelViewSet):
@@ -61,3 +61,18 @@ def snippet_detail(request, pk):
 def index(request):
     name = "mekonnen"
     return JsonResponse({'name':name,'age':23})
+
+class AssesmentItemViewSet(viewsets.ModelViewSet):
+    serializer_class = AssesmentItemSerislizer
+
+    def get_queryset(self):
+        category = self.request.query_params.get('category', None)
+        if category is not None:
+            queryset = AssesmentItem.objects.filter(assesment_category=category)
+        else:
+            queryset = AssesmentItem.objects.all()
+        return queryset
+
+class AnswersViewSet(viewsets.ModelViewSet):
+    queryset = Answers.objects.all()
+    serializer_class = AnswersSerializer
